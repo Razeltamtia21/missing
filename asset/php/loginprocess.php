@@ -1,12 +1,11 @@
 <?php
 session_start();
-require 'config.php'; // Pastikan Anda memiliki file config.php untuk koneksi database
+require 'config.php'; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Mengambil data pengguna dari database
     $query = "SELECT * FROM users WHERE username = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $username);
@@ -15,10 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        // Memverifikasi password
         if (password_verify($password, $user['password'])) {
             $_SESSION['username'] = $username;
-            header("Location: welcome.php"); // Halaman setelah login
+            header("Location: welcome.php");
             exit();
         } else {
             echo "Password salah!";

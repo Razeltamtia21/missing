@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit-reset'])) {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirm_password = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
 
-    // Periksa apakah email terdaftar di database
+    
     $sql = "SELECT * FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -17,13 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit-reset'])) {
     if ($result->num_rows == 0) {
         echo "Email tidak terdaftar! | <a href='http://localhost/code/index.html'>Silahkan Daftar</a>";
     } else {
-        // Validasi apakah password lebih dari 8 karakter dan sesuai dengan konfirmasi
+        
         if (strlen($password) < 8) {
             echo "Password harus lebih dari 8 karakter!";
         } elseif ($password !== $confirm_password) {
             echo "Password dan konfirmasi password tidak cocok!";
         } else {
-            // Update password baru di database
+            
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $update_sql = "UPDATE users SET password = ? WHERE email = ?";
             $update_stmt = $conn->prepare($update_sql);
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit-reset'])) {
         }
     }
 
-    // Tutup koneksi dan statement
+
     $stmt->close();
     $conn->close();
 }

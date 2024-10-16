@@ -1,18 +1,18 @@
 <?php
-require 'config.php'; // Pastikan Anda memiliki file config.php untuk koneksi database
+require 'config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Validasi password
+    
     if (strlen($password) < 8) {
         echo "Password harus lebih dari 8 karakter!";
         exit();
     }
 
-    // Mengecek apakah username atau email sudah terdaftar
+
     $query = "SELECT * FROM users WHERE username = ? OR email = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $username, $email);
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         echo "Username atau email sudah terdaftar. <a href='http://localhost/code/index.html'>Silakan login!</a>";
     } else {
-        // Menyimpan data pengguna
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $insertQuery = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
         $insertStmt = $conn->prepare($insertQuery);

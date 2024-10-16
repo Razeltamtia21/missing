@@ -1,5 +1,3 @@
-<!-- reset_password.php -->
-
 <style>
 
 body {
